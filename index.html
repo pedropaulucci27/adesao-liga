@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulários das Ligas · IbTech / IbBot</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --paper: #f4f1e9;
+    --ink: #14140f;
+    --ink-soft: #514f45;
+    --line: #14140f;
+    --accent: #ff5a1f;
+    --accent-ink: #14140f;
+    --stamp: #1f6f4a;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 0 90px;
+  }
+  .masthead {
+    border-bottom: 4px solid var(--ink);
+    padding: 32px 22px 24px;
+    margin-bottom: 0;
+  }
+  h1 {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    line-height: 1.05;
+  }
+  .sub {
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    max-width: 52ch;
+  }
+  .section {
+    padding: 26px 22px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .step-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 13px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4px 9px;
+    flex-shrink: 0;
+  }
+  .section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  ol.instructions {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  ol.instructions li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 13px;
+    counter-increment: step;
+  }
+  ol.instructions { counter-reset: step; }
+  ol.instructions li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--accent);
+    border: 2px solid var(--ink);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ol.instructions li:last-child { margin-bottom: 0; }
+  .stamp-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--stamp);
+    border: 2px dashed var(--stamp);
+    padding: 10px 12px;
+    margin-top: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 13px 20px;
+    border: 3px solid var(--ink);
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--ink);
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--ink); }
+  .btn:active { transform: translate(0,0); box-shadow: 2px 2px 0 var(--ink); }
+  .btn-block { width: 100%; justify-content: center; }
+  label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .req::after {
+    content: " *";
+    color: var(--accent);
+  }
+  input[type=text], input[type=email], input[type=tel], select {
+    width: 100%;
+    background: #fff;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    padding: 11px 12px;
+    font-size: 14.5px;
+    margin-bottom: 18px;
+    font-family: 'Inter', sans-serif;
+    border-radius: 0;
+  }
+  input:focus, select:focus { outline: none; box-shadow: 3px 3px 0 var(--accent); }
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 14px;
+  }
+  @media (max-width: 560px) {
+    .grid2 { grid-template-columns: 1fr; }
+    h1 { font-size: 27px; }
+  }
+  fieldset {
+    border: 2px solid var(--ink);
+    padding: 14px 14px 4px;
+    margin: 0 0 18px;
+  }
+  legend {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0 6px;
+  }
+  .radio-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 11px;
+    font-size: 14.5px;
+  }
+  .radio-row input { width: auto; margin: 0; accent-color: var(--accent); }
+  .radio-row label { margin: 0; font-weight: 400; text-transform: none; font-family: 'Inter', sans-serif; letter-spacing: 0; font-size: 14.5px; }
+  .upload-box {
+    border: 3px dashed var(--ink);
+    padding: 24px 18px;
+    text-align: center;
+    background: #fff;
+    margin-bottom: 6px;
+  }
+  .upload-box input[type=file] {
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+  }
+  .file-hint {
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .checkbox-declare {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: #fff;
+    border: 2px solid var(--ink);
+    padding: 14px;
+    margin-bottom: 20px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .checkbox-declare input { margin-top: 3px; width: auto; accent-color: var(--accent); }
+
+  .who-signs {
+    border-bottom: 4px solid var(--ink);
+    padding: 26px 22px 26px;
+  }
+  .who-signs .who-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .who-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 2px solid var(--ink);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    background: #fff;
+  }
+  .who-row:last-child { margin-bottom: 0; }
+  .who-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 5px 9px;
+    flex-shrink: 0;
+  }
+  .who-row.directors .who-tag { background: var(--accent); color: var(--accent-ink); }
+  .who-text { font-size: 14.5px; }
+  .who-text strong { font-weight: 700; }
+
+  .group-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--accent);
+    color: var(--accent-ink);
+    padding: 6px 11px;
+    margin: 0 22px;
+    border: 2px solid var(--ink);
+    transform: translateY(14px);
+    position: relative;
+    z-index: 1;
+  }
+  footer {
+    text-align: center;
+    color: var(--ink-soft);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 22px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <h1>Formulários das Ligas</h1>
+    <div class="sub">IbTech e IbBot — preencha seus dados, baixe a ficha certa para o seu caso, assine e envie o documento assinado.</div>
+  </div>
+
+  <div class="who-signs">
+    <div class="who-title">Quem assina o quê</div>
+    <div class="who-row">
+      <span class="who-tag">Treine / Membro efetivo</span>
+      <span class="who-text">assina <strong>só a FLA-05</strong> (Adesão à Liga).</span>
+    </div>
+    <div class="who-row directors">
+      <span class="who-tag">Diretor de baixa cúpula</span>
+      <span class="who-text">assina a <strong>FLA-05 e também a FLA-03</strong> (Nomeação de Diretor de Baixa Cúpula).</span>
+    </div>
+  </div>
+
+  <div class="group-flag">FLA-05 · para todos</div>
+  <div class="section">
+    <div class="section-head">
+      <span class="step-tag">01</span>
+      <h2>Como funciona</h2>
+    </div>
+    <ol class="instructions">
+      <li>Baixe a ficha FLA-05 abaixo e preencha as seções 1 a 5 (letra legível, caneta azul ou preta, ou preenchimento digital). Não sabe ou não se aplica? Escreva "N/A".</li>
+      <li>Leia os termos do Estatuto na seção 7 e marque os itens. Preencha também a seção 8 (imagem) e assine na página 2.</li>
+      <li>Assinatura: fotografe/digitalize as duas páginas depois de assinar à mão, <strong>ou</strong> deixe o quadro do gov.br em branco no papel e assine o PDF digitalmente depois de digitalizar.</li>
+      <li>Preencha seus dados de identificação no formulário abaixo e anexe o arquivo assinado (PDF, JPG ou PNG).</li>
+      <li>Envie. A Diretoria recebe sua ficha e dá o retorno sobre o deferimento (Art. 16).</li>
+    </ol>
+    <div class="stamp-note">⚠ válida só para o semestre marcado na seção 1 — renovação exige folha nova</div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="step-tag">02</span>
+      <h2>Baixe a ficha FLA-05</h2>
+    </div>
+    <a class="btn" id="download-btn" href="data:application/pdf;base64,JVBERi0xLjMKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YxIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKMyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMiAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9Db250ZW50cyAxMCAwIFIgL01lZGlhQm94IFsgMCAwIDU5NS4yNzYgODQxLjg5IF0gL1BhcmVudCA5IDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago2IDAgb2JqCjw8Ci9Db250ZW50cyAxMSAwIFIgL01lZGlhQm94IFsgMCAwIDU5NS4yNzYgODQxLjg5IF0gL1BhcmVudCA5IDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago3IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgOSAwIFIgL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjggMCBvYmoKPDwKL0F1dGhvciAoSWJUZWNoIC8gSWJCb3QgLSBJYm1lYyBCSCkgL0NyZWF0aW9uRGF0ZSAoRDoyMDI2MDgxMjE1MzYyNS0wMycwMCcpIC9DcmVhdG9yIChhbm9ueW1vdXMpIC9LZXl3b3JkcyAoKSAvTW9kRGF0ZSAoRDoyMDI2MDgxMjE1MzYyNS0wMycwMCcpIC9Qcm9kdWNlciAoUmVwb3J0TGFiIFBERiBMaWJyYXJ5IC0gXChvcGVuc291cmNlXCkpIAogIC9TdWJqZWN0IChVc28gaW50ZXJubyBkYXMgTGlnYXMgVGVjaCBkbyBJYm1lYyBCSCkgL1RpdGxlIChGTEEtMDUgLSBBZGVzYW8gYSBMaWdhIC0gSWJUZWNoIC8gSWJCb3QpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKOSAwIG9iago8PAovQ291bnQgMiAvS2lkcyBbIDUgMCBSIDYgMCBSIF0gL1R5cGUgL1BhZ2VzCj4+CmVuZG9iagoxMCAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCA0NDcwCj4+CnN0cmVhbQpHYXRtP2dOKSUuJnEvKS1UXzlmampeQ1tbXU9gMV5CU2ovWFY7KDRuUktsbzJkMVU7OzxZQDlTWEEtc2ttcUk8Sm1XPTFVO0s0NW9sb28rVGpZUXM/YmYhal1yTD5KV10sZTQyRzhATUUpbyIoIilOcChBLzAnLjttck4oSTZbclBhP01UXmxZdWdlVy5SWFRiPmkuSiZjaEgoOl8qLysxQUdtZExhO0JBcENuQUFcbSJtZVY+OW8taTRDZCYrZ1oxcjs5Ul5JMjVNPmdFUCVlWm4iTjtZcTA/ZidhO1BDPGoyMSJbY0ErVmxZVkpmWDBvUiotRmIkUHQsUGhlTVdWSSkuUVAic25EMlRuXUA6UzM4ZUBwaklVNU1gT3FpKixfbyg6LiMsWmhGVy0tXTtMRVc5OCw/ayVeLVc8UW1nZE90PmE4I0dzNSI1UjJTQ2FlbWBSQG5Zaj1dRFA0KmlOYEUySyNJT145LXRcNmkzIUxpKm5MSUBMTjFXMUtULy91MWxnPSorO3IpKW9vSz9gKk5PRmRIdUcmOExAOjMxb2pDXVJTJUV0XGhNL2g0VD0nISNgJmJPREhUSDFIYyFMOiRCL2h1XmkoIy0wLXNQJDBQcT1jImIqLT9ySTdzLyJaRFNrLCgwcSEnRkhuZ2hjMUI2QF5rPj09al0mSUVqT2RLWkI6b2pVZy8vWy9CbERXXD5IaGhTOUsiVmBzKmdUKF5CNDZZMkhWP1tqPiEsT1k+PCREXCZrMD04TTdvUGo3T2I1QDgkIlsoY3RJRDEmNSJDWlczMScsaj9YM1kqY1RsSy1tX15vSkZkN3IxKCE5clgobF5gQTg2b2FaTSIiWixVRlczRy5iMiRlTmlpZnVFQWNdZUA0Oj1NaVcnY2NMZFBqTjJHKyhiRW8mbS86IUQ5XDRkLS1UPFMqTDt0MSRQTUNpUW4nPzk6Y2BTc1EmM24vO0txKVAxJCJCWHNQQW9sIU49VE4yWlpXWylqOm9aO0NaUG1AM1B1N1kycWJyI1knYz1jcUpbRjE3RTAjPW47bzFzaTxEJFM+U20lci5iVlVyQ2UiRHMrKl5BRG5cISIqY0k1UWpmRUFiSExZL0RhJz5mT1g5L105c0NoI0YrJjNHS0dAUThhOUFPPGhdby1wZyxvJEByNl8xcCZlZ1ZWcDVEczslOCNibE9HUiVgWEFRbC1aWyFoZUgzJ1k7Y2ZIKiE+Yks1ODNAKWsmOG1tamgqSEAxWFs2XXIlMDk0SlBKRTRrTy91TVYqL1A1c0xGcFYmTSchIlc+bVldaytiSlIrNDxtMnJibUw8QGciX1ZmOm5TPSJRRF5rVD03RC9MTXQlbkxLT0xDSytlSWRoUFVFKCUzbyxLL01GcFlCZyYvOmk7WXNZOjQ6THJYRm9wWmU3RWg8LmlkLm5tbzoqJzpoWCtBTHEoQD00QC4nRiJRSTMmZG1yayxZckpFPjwkQFAsP2NSbVhdXmc5X2FHKktuSTM+OTApaDtWTlRaZmVoL2FWalZqLDoxNlkxKVxeO0NWYi83JGBJPTEzdFdqIWJwcj1gdGgzZ19FYmcvQSVBKTwhLnFuPW8wTVUwVVxpPlhoUlpLTmlUOjQiTkI3UD9jNDJUQiFbbFdiUkNnViolWU9RUFVbSlY6PUshLjw/WFpvITxxNVtjRVNHMjIvRl8sMTdeRmUnOU1gTFIjaWF0XTo7LEhPUSdvRTAmT3NTaiVyaFBKcERvOU9dYFlFXiJuLSFrWD1nMipJXi9wUlBcZ01JKT9PSypjZE8kZEQkXTsrZzVuWHItV3MiVGsvZz4uMDYkNj8iXjc7QzZjLT1WazdfUj5JSkIuUTddOT8hOnQ0X1RnWzhYPlNaXD04W2hoaTk2L2RnOVxHOWpLL3Q1dGYtKUFEMGFnYkM+WT9KWFRmSUZZPGFjJEItKE8rJCJpb25EI3M1OVEjM3FGXl8rWkpiOzxoUEZRO0IlP00/SExKPS1XY0hwcUVhMHI1PTxnOE43RUNINSk+ZF8zNlBiQ282RkpYZXRGJVRmYThpM1l1Q0FsUFkkM1B1QFhWVDZFcicvbWhLMWVmISQ0QHQtVXMjKGNIL2JyJl1gSmwxck9lZythbEB1dSdrMWhkM285Ul9RY0NQbWE7aSklYmdFJFMoVi4+bVwnWFJYNzU1JmBNSmwqXCclS180NEdxYztzcWNPKUVvIzE8Qm1PZm1KNEpEQSRQZGJ0YykjZkZcXCw/R2tsSEY9JFIsMm1vRFRTK2EuQC5NT0cpaWhxVU9MN0lMKHU3Q19NdF5DUCEoYyZqYGBML1NOcEtYU0xhKjlYLGhLbGxWQ11ZYmk3YyIsK0NKKDhJTWUpN0lAdD5hXk5AKHAhclZsMDhyZXJqKVlJOWJuZ3NxV1peVE8oKExlampLNDA4YkR0UTI/RzFSJUwhRylSYGopPmsuTEdzI2BaQThHPzBjWE5cJ3QzU15vKlFDVC0qUCspQk84TmsudDREYSJzS21IMFxBZ2MvblxndGRlRCxxK1VpKCEqTF1fZzIjL3EyLVRFcFctVzkyOF5oOjhiKk9WZj9oOyVxRF1rdGVXV15nTWVfSko7aVtWJEQ3ZWElRUhmJzdHYVNUKkFmPFUyX00rIj1bNDJiLUtUSlRCWCRgKUk6Py1naC81PG4lUyorNWpzLG5XMkVZWmlkYGZYOVIuXzk0LiZqaXVwYkNERzwubU1mLS44WCM/JU8tOyg3KEosby1rcTlLKFw/UFpOaChwMVVwNj9ncVdmdSJAczZMXGtQbSNPbi9mSHJTJEAxIU4xWVNcQUsrdFkyVzk0alo8SDAwT15eTHVER21JUipkWmEpMVNKb0ptby8pQjIkYCo7RTA+TmBnRWJhU0VQXEhqUy9fbSw7Xy9wdFtgYktnS0RxKU1UUWNgWVtZZicpXj9vW1YvXWYkJG9yU0RRcDlRcTQ/XiRgN1NyWCxdKFNWO2s9KlcmYyhAS0lWcldtRnAyXS1fUV9TIkoiSmxDUUxuQzsvN0pUX0QpTl5pRWEzcjtBajhaZ1t1SCY2XDE/JTZHWyhaLkVqLSwlITU3JldESjhfRkckTkVDLTNEZWNhS1FzMEJkZUZiRzonOG5yWC8uP1NrcG9sLl8hSSM9Sl5bb2w9SlZLaD1HTitjK2JMbzV0VU4rZjwrcSsscT9oXCZgLUVkMCpHKjZKO0JoTDNUOnVHci0lYGlYM1RxWFtabUAuYD46X2khRmZpbDspOmBoI14mP2leTTk9T11sS2sjN1wyJ0ZAYi4+ODtAMzBraV8xXEJFdVwwPXU3PkcpJGRgV29dX3NxVElJbzJjX2RfOT1YUzpAQUZGUkljNFhbRmpyS3FVSDVedW5vTEQwNCVFSDlicDNkUVlnZGVMIzo+RmlKMiZoNj85Jj9ZJzY0O3BrIU1cb3JkVWdRQmlvdHNRYyEuV1g7c25fRSxxaiY2U0c5Uz8hX1ZTQUdrNyYkJDUvXUsvKEM6PyQ4JW9NWDByJlltZDpGRjhlPiFoLGcrcnIub3MyPz4hUS5EbCY6NzxEK2I/Y2s+UCMqNiYhVjE7IUpvWlFbM1xaSVRjXylBcEJmYUNuOGkucFwqTHMxRUMjUmYoTFlDYytdS1ZUI0VuQWRHdVUzQ1YqV2MiJzNDTyFdLCVLLztwaEZcbEY9YWVVTkctbkktZylqYVBzKkkyRDlBX2ZLXEIqMDM/K09CTV1NbmtPPnFvNmJCJTRgJlJYKWV0SElFJzMyYGlBU2cnYU5MTmdxZk1pYERxImZsVW91WF8jSypqWEllIjFIM3MrWSlHbyZfSmZPYWZwYWU1NklAKGZBZ2dhYHUhKV8qUlRiZ1JMQV9vSEZJWS1lXEY7U1ZJMCokLHJSX10sWmZrYnNaTSM5dC5dK1tsKzNoXkBBKFFzbkBUPUBTImZsY1VbY1w/OmM/MDM4LSJiJVMkNERsMlBoU2oncDxKXzk9SG8pTVQzXD02QmxYIXFLcS0mL1IiY3EuRGAxLmhkY0FiIldcWUJsLExxQyVwaChDUFlhYjw9TixTcUxVPmU5O2FQKldqb2IwTGBLPGVPcC9FZ1NzakZPRD5DNyZMXTYwOiczbyYuKCxFTD0tIjhPYTA7PnNbKytNQ1lLbUZPaVYzTFE+VlxYImteI18uNlBUTWBNJD4sK0MsIyNTIzU7Ljs7U1NASS9vNDAkWThUTmQzdTRDL1RRME5AWElAZVxmNGBQIjdDU0NDIkpVbWYtbD1cbSp1YyE2cStVTzRcL0Y3QCtCUDltR3AwJyUoQi9sLi91aihVI0xxSTFPJjlpdSg+WlRwIlNaPmNPUFlbWUEtOFdeQCElPysmbCtkW10rZmtHPm9xXV9kQCw8Ik5UWF06LjxfPTllRD8jKCxMdF4lYyNFPDZbOnRAIj5hSyc0MDhfU3IsTCY/SkMrIj1yL1FJTnNYLUQnbWI2VS9dWmZxWi4nXjdIXEc8dDJEZyFGRlk/IXFyVDloTzA3W1VJRkRWMU8/V0cuRUMjbGw1QEskcVVcNE4+U1YkSldbUytyZDhfR0F0XkBvYjtXN1NrcllnbDtEPVk3WUVOR2leOlokP2w0NGJAJF0zTUxNTjJsMzolYGw/MFIzVWU8RkRDNj04JGV0cXJyMW8hQS90U1xGPyEtP3IybkkvWUdLRnJxMmtjZUYidEBvT2puWT0vKCFYQzNTKD5AXV5XSjpkLTosZGE/VlRNaCw4P2dpbiVjbnFGWToodDBEPjw9KVlnLzZYTE9FdUpRS1ZAISsxJiRIYDJNQ2swXS8tJ1woTTxUVzNGLkBdO009LyEnVjY3OlROWkxEcVdMV2pjaF9JcCxmayhTWDo2PllVTVlFJnJRJkxqalUrc2VsXmxTXyYzLDgrSiVuUEhfZmJzXVJfWjZQYWw3Ml4nTWxEZFFiYCdcSC5pOlphPFQ0bWApWD5HI2QlXVtSK1tfImMwWlkrPT1sVzQ5LjphVDZMVERjTUBCMEwpPVJjbm8iTil0VVZuKXQ/IU11ciJsPFIvVFspY2ohcyhScjxmOkhUckY8OWMmOiI9KlA0QyczXT8iJCdkKjM2UkNtWDZCdFMpYyMoQmlORCRRWWc0Jl9JVDZjZWJAbVdiPkIrSkBdN1JqRj5DZT84bUI8RCkwcCFrRHBdW0JpaHUkOmNXWmlGUUouVFxiUDE5cClAYTNeVW5RKiJQMyo8cz89b1tPbiZjY3NPSiYqaGdOOi0+SmluKkM4W3FaIW1SN2xCJiR0Z0ZFWTdTSXA3OT9TIyZTaSRqal41LmBqLVBmMFp1UDpFcUgnQ1lTQm5dXmckYVlHaTEiRmIocDUvYGthV1wiUyQzVE9qIyVaKmtyYU4yX2FbRiU8dV8jKSskKEhZXWw0VCs3VVB1ajgyZjI/Q3BeM2cobE9WTD5oN0lASjBfQVU2Zk1KOGBzSXU/SSRrOiZtLUwlLFdIW1FQXCxbUkZTOWRDWixrTEtAMlNdQSVrcjFCbVw4OSJJMWhnMmVrXVspNjBCR2Q2JHBlTy9CJSZWMVdUPj0iSnM2bidbdUxkI1hPKlc+JWZATT9IYlJyN19LJkdTLDciWVxIZ1NJNFopWzgkPGtSQjNlT2JnKCNJPUc8cGYlP0tdUXBuWyorJipTQjEjMF1DYSdzaXFpc2ZmWF48OzxOWjkyW0JkRzMxZypiYF1MZC0jYypRc2pkRm5EXWs5UVxUTV5mLURdMSMxLmRaczB1QFBjKj9YKShCIVpGN21RQUNqXy0sc1tcQmdALV4pajRMVD0nUmg0VGhIQlM3XnNKdEYrVy9wVVg0OGAqT0pYWk5YazopI1dGQz49Q0VsPyxEJzk9YChkJzA9WSw8blYsKFkyJ3JaWGZkKS1eSCdGVVw6ajxWTj9LSlotWFEhYTBvaWokMmhUKE4uWk43Z2RuSHJyWDMhaTAifj5lbmRzdHJlYW0KZW5kb2JqCjExIDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDM5MjUKPj4Kc3RyZWFtCkdhdG0+Z01ZYjomcS8pLW9aSTpsIiMlUltqdSolM2AxIWNZOUg7XVJfI2laOVUuciQxInNVJjlpWi8xIW5VJTpKOFB1aUlOZzNpcU1YSUsuPyQ1RjNNNEZEOmMtPSIrXzpbS0dIaTVJLT5kMjBMaisvI05gPFM7Ll1KQShCOUJjTEFpMTxLcC1VKGJeVnFgakwiLiZgMTk5S3VKJ15WYCk1S3MscExIaSxhKFVqKk1GP2BvIjRDXWAyUCRuPCFuUlNwKTB0LEdPOylOL21aJEZmdVtWTW9PW2FZaSFjM21wZCgiNWk2OWpaaEM9dUgzJTdXb0hNKFxOLkVqQ0FvSXBIZmBDXUBLM3M8RWolYlxtaExbLVhzcGtqKm5aVzU1aU9jZjUuRiUzMjU6PVRDMl86RVFxLzBJcFtJYEIoJylsS09MQXRlbzhJQiNcXzdlWyhXbltcK0JiUUdBR0UqLXQ3TjYlcD8kZl9fOVk/MzUuWltsSl0mTSRhSmsjNElsP1soa0tVNCtea1FgQFcxLTlZY2pVMCVBO1VbbzFUbnJAJGNDTD1QLzhCPDpJaGpuRF82biouIWAlPUslWihjZFlqdF1bYXQ/VkFRSUlsOnFPPHJsVSxTaU9Fajdrbk08XV1GZV9AWCF0YWhpQD4rV19cY1NnYls0YXVdKydiQHFPITA9JkstWztFTDshRU5VQnUibTxYdHReb09dYCRcYURUOW4qNzUlRlxsaFEjMDZHaUp0U0tYT29SQC45OUo3WE8nW0dsTzI6Qm9qYnRqSUZJSiVdPFMzWGV1SGE4cEIpPUM7ZkZZY2RjXzc4QDFbWkc4V280WlpiI2dzTz0wTighZiwmLyZdMjteOSxjWD00WG1KPWItPjs3OSdoIiplWkUkKElrODNxT14uJCFBNikyQ25pRylIUTtuKjg8OW5xMiElN2JiVEM+NFgyJkU9cmFILTFlcTw4c1orK1ZldFtSRFcpSldmKihFWCMtNkpwQyQwV0hHOG9RYGImb0xZVGcvMlcnZW4tLEItKkFSPV0yV1kmZz0lMVxJbkQvXVcmIUZLS3FSS0E1b0gnPVg0OUFORjcpLTZZOWE6LDRUQT5ZO0w3PkBfMzMhVT5bSGEsSDtlZC5Jb0c0YCMmQ3E7bFhqVUskPEw2IkI2Xl5OPFhVWSYmZEQtaV5ZNXIvL2ROMzxVXTtYZGA9b11uQ2QwMVkzMFt0SyxWRlBGSkdrYjhhO3EjbyhfZC5yTz1OT18lbjcnRGd1U2trJGZcbSRcaEdQOV5jOXMkP1NQSUhkJkZjTFJWUEhoViZKInJaN0csZi0wWk9rdDxONS5rXTwyblU2QUllRmtCSWwqXGpVVj8rbkQiJ1sqc1g4ZmNYRWIjJTM2VEVDN1VdaWY6MD8kV19yUEFCRjdBNig0ZV8+N2kxbldkZEJFMXE0Zjc2ZkxGMik+U1taNE0tOiZsWWM3cyU7TjQ3TUhRNjhQNTlJOSI0cSkqZTRUU2EnY1FgJzImV1MiZENjcmAqKUBUOnQ/KXM3cVNTRiQhWjQ8QjYkLG9OdFknSEE1RVhAN2k9T0ZhLEFccjs/Vz0oVSRCSVZoWTRgQVJzUD5fM3MqJG4yMEZNJz5kQGZrLHI1NjVBXFNBa00qbG9TK1llO29dTkw/NV9EZltPPCxaLCFMMClkUFwuKURTOCs7PkYtQGdkKilTXDVSb2ErUlRlXDIvRGJfXipYYGFoQWI5OjNXcikhKVNfXWw2aFVCWW5NZmdOLTdxRl89VyFdMChucl4tQUdRZFlfMzIxWSRzUm1HWGdaTyxUNUN1ZEVaZjVnW0VKKXQnX3FwWmdNMmtOQG4mPzpwS110OWQ9b0UkaV9abysoJUVCRE1TJiwvKFRBLEtCWmYoSWEuZGMtSE5TT29EMkBcYkFfOjRfO2tfcDZiIUpSL0BCVlMxXGJETUI/dSc+SVpbRVQjIyIhai9QKCdPdFU3cXFFI2knNjwyIlZrKkRjJjQ2OENAY0wkK2RPSHJzZ1opLVxELEgoNVg7JCM7V1kzTmFKLW9kPDtRKFNkNWxINFg2LGlGazUpOzc8Y2JdWSpzaG9LPUYwKTopOyJcIipxYFQ/ZUxtdGFIJUxQWG4uM0ksXUdsbiQwYFElakxiZyNsIj5pcF4+NFtnZCNsSTtaYU4wQzopQWxvNlRzNSk/VzdGJlI0L1xccjtdRjxSSy4wODAqWVFKaHVaKW9HYS1XaF5tMC9MKyImO2IvUjBJcmlyaUQzR1s6Rj9qLlFIaGVOL1RLXGdxIi40cjFfaD9CWDxyOWlnRlYmPyRtLUhYckptSGU1M3IuczRVTSVAZjc3QVBtXiMiOl5RTSZEU3EhY1E7RilrPW0mODMsbGNjYCsvLzY6YixnVlw+ZmIpY1c6P3Ryb19USkEvXV8ibUA/cihAOEZrUmBbI1BBbSgiOSw8bjAvNmRXVGIpM25ZTj5YV0tqIydlcz8uWyVCTC1pby5oQkxrUiFwOlpUSzs/Yk9rM1RnOyhpSHEqTytYJ0s0IWZlI2NSRDI8ZWVBcnJFZ0VkN1AjSUtfJEs2XCgzYzdLNzYwZERxOkNoJWdIajVFR1RfXiRuNzliSidIIjIqL1ddJ15cPl9LJGAwZCs5ZGczOkpPPTZYOEZXSzQ8RzhwPUtARCtlRCQ1J1xRI1Y5K0xwS0BgJSNNXSUmdWx1REsoUVE1KE1UIk0+NlJFNzo4OUk7MyNAak06Q3E6YFxYTSNtYWdlMzg2TUlqbFtaVWdbXjZTKSw8VSp1TUxDdCUtWExibWA5SFQpTzI+VEwic1BZX0tILj1ZayI5bSdsS0JLajxVcGxmWUNcYU4lN0lEQ11cK0RzYmI+aU9vPUUoZEBxJyU1ZGQpWDxeRFFlblRbMj1DTU5RLjhmLC1jKVtDMXElbF5KXGhjYCdPKXBOVTkraHUycC8xRnVvbi1HdF0nKnVIKzYhc3RHaD0yMyM6Y1tVOl9LWz01c2BHa2tqJkgyXSomKyk3Y040b3RpOGMvK2xZSVlgIyxwTEw6OE8hMnMmUjZOLmQvbTFfOC4/YnNmUT50KHAoJ3VFMGkta2cqPklFSEJjI3RycjQkVGVhakdgPysvSkhlZEYvUWZkPHElcU5XTiwqcjhoVWheSEFMK1QvMFtlX05RRl0tVGE2TkJVNGVCL3NkW05QJ0BWQUFIbkRTKkE8SVo1WXNxVE5ETWVaaydUWywjKU5mNWJQQWNOZ0g0WkNsX0Q5NkdecGhgLHFmXFAjX3V1P14tP3Elbi5XYnAyVGdhQlYqJUlZQ21DMWFbMHVWPVlLR3JfJG1RUGomXGBZKUxpVWhOJGhUMDxCaWtRV15AXT9rSWxPYSdxPjc1SWBRY2Q0UD5IS2pLXTlzVF5pPVhWPyhnKWw0LjhdPFA/Jl0/aVEhUE41bkVWXkVZZWNwLD8nPEszQmUtLC5aVydiVUdJcUAhK2s3XmwtIT88VGdnOT01anVTZV0lXCciK01zWiZOZkVHMT02S1lqSlRLZkdeKXFxKzddJT42WF9CJDEmKlVsdCJWR3JZbFowRyRZdFAhNG8oQUFlJVJGVGBPcEFpb2hfKnNZcWBXbDJGTlxNIVxAUyhdWSZEdDtyOlxWNDgrTT81MSZvJFFicyxJPkdJLEkxIm0vWl02Nklga0lccGE1byVjJ1JCQGgnP2s7Um43aSI7bmRLXypzOWpbPlg2Y0I8JylaXmNqTjQlbyIySD1GVF1nWD5yQV4qcWo1Q0JFb2M0c15VMV0yOClWX0YiSzhBZHEzUSdYR21GWDIvKydsQycnOzNLMl45RE9uWmtkYVlaLzs8OVhFQ1MtKCc4aWtvNWtsYSlnR0lrI0gkSChOISNvKmAuPEM2cixaZjJQbDRhV3FmR0FSWFxOY0gkVy9eODdQOix1LTM9LmxGLktKPlspXGhBMEZoWW4xWFpiU0QnOzQ0Q281T3NMKFlgaEdfYCkyViI8VEJ0JVs2QjYsU2s/aDVgaFRsVkRLcHUnMls0UGJpOzdTJS1HSjZ1XTtzLS5qbnJlYFZwWktoRyIlTD1KYVdqJERqT0I1QykuX2gpb2ZHY0MmVGRTJTZdaG4zRzVcbWY9LVpSSDZtcU5oPktKK04iPjdvUCc7Q0otTjkiRFFVSmJoQlg6Rk8sZFlwVHJrUUZcXlYnRWxoUXAsaFQwPURRTTIqMmBUcERzVE4iX09qWlFZc2Y/KiYnXSw/TkVqR0ApR1w4XTJDLWpLTjdWMzVuRmE5TFBqOUVpSlpGMV4yXHVATzgoUiFTWlxAcWJnQ0FtO2YnXmVEck8kLyw7LCg1NyptJiZpcCVaO2gsXl1gUURMaERpYDpbS1MtcVRkZj4uTycuMmcpPDQpJWonS21dM2dlPTYoQTA1VWFOYzczYEttb2FeLDIvOWdSZlopLWtYX0w/bSlHaXI+Xk86TTgkXCYoY1IwUXMkZj9SOyFcQjlRMis5ImdAJWJfc0Y8bVlQOlticTknOU5EQjlcPS5YQV5YRmwnJmRpbyRCXi1NRCFabDNCNUU2c2s5NWpkLzo1UWMyK3UkL209S0UvWFBbbUBcMy5QIyFCUGRmWVckOlpTK0tPOlNXdFRRMz04TEZfI25wZzJabz8vJWY+czduW202TVZnPWZdJzBMaj4mSDU8bWM3JmhNMCM8PWpYbmctJjZzbC4oVSNiYChRP2c4L0RWKylIcERvIlEsKTs3RWYkU09HI1g6Sm0lakAoLUcpXnAhTjUrRjZQWzVeZzg1Ol1bX3BLP082NXVZWkFzWW5ITi4sSTQobjgzSG5uVi43XExBZ2xROl8sUjk9R2BwYjNcMF1ATytDJUVqczNlQyxVMnMrP3M+ZVtqQG1jKWplSCtob3U+Ym8oOkxESD49L1wwXkpGcDUsQCdBImhZZG9sQ0p1ZW1MP3MickRSQGtSN11EbShsIjE4MGQ2LiVSSkdlK2hDLT1vR2smNFclaXRVKWJRZSQwQG1paWM+XjJXO21AREpnPkJxLGRfPnQ4QjtrS1FJXjg8T2tRU2JJVDJIPD9HaWZBRDY0Ty1qIytpRy0hJXJsalooKEliOjUvV2VeZkY/LDJXWT1ucz8mdFZIYVliKGhRVlMldSg+SHUjTyk1cyVEWCJEVWhiOFkhLjBYUjciWmNLYWxwcGFlP2ZfRWQ2Oi4ySSsjKUZzPSpHXWZTSlliPHJYWGdgbC9ffj5lbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCAxMgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNjEgMDAwMDAgbiAKMDAwMDAwMDExMiAwMDAwMCBuIAowMDAwMDAwMjE5IDAwMDAwIG4gCjAwMDAwMDAzMzEgMDAwMDAgbiAKMDAwMDAwMDQ0NiAwMDAwMCBuIAowMDAwMDAwNjQ3IDAwMDAwIG4gCjAwMDAwMDA4NDggMDAwMDAgbiAKMDAwMDAwMDkxNiAwMDAwMCBuIAowMDAwMDAxMjUxIDAwMDAwIG4gCjAwMDAwMDEzMTYgMDAwMDAgbiAKMDAwMDAwNTg3OCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzwwYjRlZTE3MTE5OTU4M2MzYTk2MGY0YTg1YzJlM2ZiMT48MGI0ZWUxNzExOTk1ODNjM2E5NjBmNGE4NWMyZTNmYjE+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAob3BlbnNvdXJjZSkKCi9JbmZvIDggMCBSCi9Sb290IDcgMCBSCi9TaXplIDEyCj4+CnN0YXJ0eHJlZgo5ODk1CiUlRU9GCg==" download="FLA-05_Adesao_a_Liga.pdf">
+      ⬇ BAIXAR FLA-05.PDF
+    </a>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="step-tag">03</span>
+      <h2>Seus dados e envio da ficha assinada</h2>
+    </div>
+    <form action="https://formsubmit.co/peeronoronha@gmail.com" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_subject" value="Nova adesão à liga - FLA-05">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+
+      <div class="grid2">
+        <div>
+          <label class="req" for="nome">Nome completo</label>
+          <input type="text" id="nome" name="Nome completo" required>
+        </div>
+        <div>
+          <label class="req" for="matricula">Matrícula Ibmec</label>
+          <input type="text" id="matricula" name="Matrícula" required>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label class="req" for="email_inst">E-mail institucional</label>
+          <input type="email" id="email_inst" name="E-mail institucional" required>
+        </div>
+        <div>
+          <label for="telefone">Telefone com DDD</label>
+          <input type="tel" id="telefone" name="Telefone">
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Liga</legend>
+        <div class="radio-row"><input type="radio" name="Liga" value="IbTech" id="liga-ibtech" required><label for="liga-ibtech">IbTech</label></div>
+        <div class="radio-row"><input type="radio" name="Liga" value="IbBot" id="liga-ibbot"><label for="liga-ibbot">IbBot</label></div>
+        <div class="radio-row"><input type="radio" name="Liga" value="As duas ligas" id="liga-ambas"><label for="liga-ambas">As duas ligas</label></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Modalidade</legend>
+        <div class="radio-row"><input type="radio" name="Modalidade" value="Treine" id="mod-treine" required><label for="mod-treine">Treine</label></div>
+        <div class="radio-row"><input type="radio" name="Modalidade" value="Membro efetivo" id="mod-membro"><label for="mod-membro">Membro efetivo</label></div>
+      </fieldset>
+
+      <div>
+        <label class="req" for="semestre">Semestre de vigência (ex.: 2026.2)</label>
+        <input type="text" id="semestre" name="Semestre de vigência" placeholder="2026.2" required>
+      </div>
+
+      <label class="req">Anexar ficha FLA-05 assinada (PDF, JPG ou PNG)</label>
+      <div class="upload-box">
+        <input type="file" name="Ficha assinada" accept=".pdf,.jpg,.jpeg,.png" required>
+        <div class="file-hint">// envie as 2 páginas assinadas, digitalizadas juntas em um PDF</div>
+      </div>
+
+      <div class="checkbox-declare">
+        <input type="checkbox" id="declara" required>
+        <label for="declara" style="margin:0;font-weight:400;text-transform:none;font-family:'Inter',sans-serif;letter-spacing:0;">Declaro que as informações acima são verdadeiras e que li e compreendi os termos do Estatuto das Ligas Tech marcados na ficha (Art. 21).</label>
+      </div>
+
+      <button type="submit" class="btn btn-block">ENVIAR FICHA À DIRETORIA →</button>
+    </form>
+  </div>
+
+  <div class="group-flag">FLA-03 · somente diretores de baixa cúpula</div>
+  <div class="section">
+    <div class="section-head">
+      <span class="step-tag">04</span>
+      <h2>Como funciona (só para diretores)</h2>
+    </div>
+    <ol class="instructions">
+      <li>Esta ficha só existe se você está sendo nomeado(a) diretor(a) de baixa cúpula (Art. 33 §1). Treine não é elegível a cargo de Diretoria (Art. 18) — confirme o vínculo antes de seguir.</li>
+      <li>Baixe a FLA-03 abaixo. As seções 1 a 4 são preenchidas antes da deliberação da alta cúpula; as seções 5 a 7, no ato da aprovação.</li>
+      <li>Depois da aprovação, leia o termo de posse na seção 6 e assine na página 2 — junto com quem indicou, da alta cúpula.</li>
+      <li>Assinatura: fotografe/digitalize as duas páginas depois de assinar à mão, <strong>ou</strong> deixe o quadro do gov.br em branco no papel e assine o PDF digitalmente depois de digitalizar.</li>
+      <li>Preencha seus dados abaixo e anexe a FLA-03 assinada — além da FLA-05, enviada na seção 03 acima.</li>
+    </ol>
+    <div class="stamp-note">⚠ a FLA-03 é além da FLA-05, não no lugar dela — diretor de baixa cúpula envia as duas</div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="step-tag">05</span>
+      <h2>Baixe a ficha FLA-03</h2>
+    </div>
+    <a class="btn" id="download-btn-fla03" href="data:application/pdf;base64,JVBERi0xLjMKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YxIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKMyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMiAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9Db250ZW50cyAxMCAwIFIgL01lZGlhQm94IFsgMCAwIDU5NS4yNzYgODQxLjg5IF0gL1BhcmVudCA5IDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago2IDAgb2JqCjw8Ci9Db250ZW50cyAxMSAwIFIgL01lZGlhQm94IFsgMCAwIDU5NS4yNzYgODQxLjg5IF0gL1BhcmVudCA5IDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago3IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgOSAwIFIgL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjggMCBvYmoKPDwKL0F1dGhvciAoSWJUZWNoIC8gSWJCb3QgLSBJYm1lYyBCSCkgL0NyZWF0aW9uRGF0ZSAoRDoyMDI2MDgxMjE1MzYyNS0wMycwMCcpIC9DcmVhdG9yIChhbm9ueW1vdXMpIC9LZXl3b3JkcyAoKSAvTW9kRGF0ZSAoRDoyMDI2MDgxMjE1MzYyNS0wMycwMCcpIC9Qcm9kdWNlciAoUmVwb3J0TGFiIFBERiBMaWJyYXJ5IC0gXChvcGVuc291cmNlXCkpIAogIC9TdWJqZWN0IChVc28gaW50ZXJubyBkYXMgTGlnYXMgVGVjaCBkbyBJYm1lYyBCSCkgL1RpdGxlIChGTEEtMDMgLSBOb21lYWNhbyBkZSBEaXJldG9yIGRlIEJhaXhhIEN1cHVsYSAtIEliVGVjaCAvIEliQm90KSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjkgMCBvYmoKPDwKL0NvdW50IDIgL0tpZHMgWyA1IDAgUiA2IDAgUiBdIC9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMTAgMCBvYmoKPDwKL0ZpbHRlciBbIC9BU0NJSTg1RGVjb2RlIC9GbGF0ZURlY29kZSBdIC9MZW5ndGggMzg2NAo+PgpzdHJlYW0KR2F0bT4+QXI5KyZxOTtRKSFrMjVhPThCJmg3PSxOQE9uUF0/YUArPW0iOWlrNzpvRkxDcnF0J0NwQ2JTYmBKIkxNc01eND4sNjpPQzJQIz9vOHVCRS1ON1RBaGZvSEgxUFAuISMpcElsJlhZNlQ5YCNBcjVIKmBiUXQ+SyJDcjw8ZzEpTi4kcFQsIT0kI2s9TW4zI1Rca242L2laX2BVbVE+bEI3YiRaaTFUJmQzJEVyLFBCLSwxWFtCOXBfQmxVQ0ZQVlo0SShHN25cK1dGVXVdQWl0WyMxMkVHSElBa1k6KWw6NidXSmw+Qk4mclphKmNBOWhyalwxSWdqQjROXkI1Ykc7X0V0UEsvRDpATClyS2lxKGRQSSMjU1xGP3MzOG5FI0NlRU1fWmQ2QV8oSEsjP01qTGEybSZEPGAmXVZtVTJeM2BvYWxxLyRoMz5USW4wQl02bURbaVBFOE46dV4oOy4xIXNQXDguaT5PKSJkMSIuVl8yQElldXMzLFlkSidHb0JQNl5EK0FYRXEhdFtfVkVmbW5iazY/ck1VIz5zL046VVZPcS1bPGRWSDNkYDFHRTkoUWleITc4OkUxLycySFFnMSVbZUA9cy9NZ01qO1Byc3BSRDE1Q0w9aHVGSkhjRV5NNSxvRWNRYFpeVzVMQiZBKEk0a1JyLjZBQm89MU5dSlgsc1pNK15jQ15HKkdhdGVTNF5cJVo2MjQ3Yz8jNHVKcDgkSihOMVghNSFqVD5GdDx1PDghLUhbKCEzcjxvNVMucT5sOEs/aXJQNTFrSGIwN0IyQyVJbWNlb0hOIWJUX0BwJjFzTCk5Oi81Om0tKDlOYVApSVBeS1c7Oksual9BaWBuWjtuRCFGbnBeSkpfYVxyPV8kJzJWajk1LVlZa0xvXD5OMEU4YT4kY2NdTC48KzQ4P1JWbnJLJkUlaCQidDs8Vlw2alc4bidiM2lNU2taIjhKbjdOZUFWYlRBLSIxNjJjdWQpLHFGSy9nOzEqYj0sWGduLC9GJCpkP2BNY2tRcTtKLFByWyojYDxrKUJjKDdpNkxmcEZBNik2SzAhSltSJzZwQFw0cE1WSktxPTQnSW0nQCM1RWZTXGdZRUsjdV06VHFDOUQ6NlQtNTtkOihNRkw/XUdVNlcvamQpbkM2MXNDSEFjcj4lX1xQMUdyLlQiRjRYbkBdJDgsOEBLRS9iWz9OcmNmNl1cMDQva1loOEVqQGI9MUdjJXN1R2A/QkRqY1FWR1QzcFMzSWpeI1pTMDExbDh1J0A8YmlfPScqbDNfMW0wVEJkXlZdUERBbCFeRS1qXydaYVx1KSxNclspb2tzJlA4NUZdSW1rKGNYJic8MEIkP0g7NDE/VlVFR0knKUknLFZBRlNSNCNRPShAZXMrQkx1PExLZW50a1U4ZSUjTm9rVVYqOGk4bTJCSG5VXTgmTEBBJj5RJTpgOCYyRHQvZmVRNSNlWTwzXEhSP0dpdClZTixJUjhTKiY3ZVFjYENKL0ItWDAkST46NEMqJSxELjlxXEYiTT5uTWtaKy4xJz9JPDI0Q1xTWHQ+O2Q+Uk50JWVrRiZzOm1XJThATCNLVSNdXm4wJ14jaDNRW1xpKDQlPko4anEuWWBaI0QyRGVFWz9Ma19BVFlJNWxjNlloU0lIVDNKOllWQ21nS0tBTGNOSWFMcy8+aFg0MTpHWXFMPnNmdTYlaGcwYHBHcS9sM2IzIUxuTGk1UUBROmBKPiZGJyMtKzA4MiJ1ZTc7YztyK0sxSFs3XzxaQiEpKis9YVlQUEBEUF0xWTEqbUs0N2g1MmQ4YkcmNEtQUyZASWEialhCQ1o8VkAlQ0sxMWRkMysrZkJRMlE2VmtecV41JU9vPHJJQGRBW1AyLC9RTEZDUmdWVClJQ0c/Y2QzXkdea048OiRSNlRGRThqMCdbRSJxXkYpIUhfcT5gVUU2bC1TNXVJbDRebjYvYFFuOFtEVWo9UkJaVF1iZjZyJmZGTW1qNlBWOTxHLlllZyMjWGhHZURQaWJUdVFeVFc4VFZgYUopWShcPCYvNkIxYSxcSDBZXCJGaWBWJ2RVS1hdUlBhWGZqbWlHRykuQzBPVCFMI11AR1ZAdUNWKClVQjstWE0pLGwobUNcc2hYQDhFbkc0ZnNkMDFXMyhEcW1uU0pIYFJqZDBxbU0lKVVNQ1g1LXBWPm0raD4qODQ3Yl9lJC9IMiRANFdpVUZATC0wWHFFOVpWTjVDInQsQWE9PmguUCRCKE1nKTIoN2xlZl4/P2FXYFBpNVZpVVFrTXVePFI5JD09RSVwKzhHZTN0cks7LDJZYmltajxAUTVcbzl1Q1pONlgkZEpFJy5rQUtoXl5ePEBCc2RgNV9KLTpSUyxfOEFSNFNmOVlUW2ViN00jZ0lIVW1aQyx1KzMrSyk9KSpdPTpbRzAhXE5TajhwaiEoTk5pU10uLUY6SjkmR01HPVtUI0hjKi1WaW0zOlp1anFranFSNTQ1bGVraUxgKnBobmYuVENoMFxhUiwlRFw2UGRrSCdESHI8KSpuT1BUaXNwXG1SX1peYmdvQ08iZT0vKWtGWVRPUjksNnVmXlZrLWZvOk47RltFVVwkQkM1XVE/ZTMiXENtbiNDb2RwQiheLk45MTRkUVMybmVcUDdgMW8hIWdYLz1fU3RPUV4/TTdNKEZIMVs1KEV1Ty1PQCljTnJ0bWE1KFJKVEw4MzRiYiVzUWVUV0ksL1JJZTozP10vVzdsQVVmPmMjP2hGTyM7TXNINjtlJFp1QnQ/YGs4aGtWbk1PUChybmVzRTAzMXFqKUZFK2xURWI6W0AidERsKyNARigwajAjZjchKj9WIyMtbzxXSihwJU9tc1NwKj1EZGdvcWRRXTVTQWQwZ1FIJD1FWlZFOWgxYGQoPFA8W246dF5iXydGXFBVXGpOPXBhQ1wrcCdaNCkpSzZSRiZsLSxBWl1JRzNFPCEjYihYRDI6MzFIRk1QNj5bOGU4al1SJWxbKmtDSUhdbjhTPT0nRy4yQVBEcWBRa0IlKHA8UWZcUmtaNUQ4Qms0U3MvWGZob0BAQllFMUR1KiMnY2RrXiZsIkNDLGhsQUskKXBILz5gcWFAaDY8dTIlMjEpYXVJM1E3XVg1U1hxO2dJbD9LTl49L08vXkZzWjZJdDpyOVUkWD9CQFhCNSwmU2FTUkMoVjpGLVdrU3BlcFEzNV8jLFFAR0s9Zk5OZigtXiphSFNYTkM7QG8qYzZjO3IpbGFTQiIrVVwscmE6TSgyMmBLYmsmOz9wUlYmbys3L0ZjTnElU3RiNHVnMXBGJzBVMydxNGA/ZjRRckR0S1hwWW1nM2FGIUw/TlhUXVw7Y1BnIjQ9YGstaD5ecS08U3RrV2NXbi1najdrM1BLPjUnbW0uSHFjJUdRTjNbW1RvPk51a2lAby5SUSUndFpQLW4xL0NKTmZbQCFcdDhTN2NXYCE4Sj5XZmJOZ2E2NWk/ISEoOTZKOGgzLU03QVs6XSNwdE1Oc0JqLU5MZnAzbC5mZ2BQZi1YJCs8TE1FSTQpYVA5c19yJ0ZfO3VdJllmXjJ1VSMxaW5USCVHLidOXSc+WmpoJlRUciVlaDhPO3E4MDJWKFVqRFxWQyM2LiNYKGZ0W2YhRlBNdXRPMmdzV2FPblVeYEZZI2pESEdUVEBQN0hCKiouciQ8JVh1UC9LQS5aTltdMCwiYD4mUmtKTCVKXnJWNFopa1JeXzM+VXF1Y3UjXzhBXEM+XEJZXDMvIVdmaisoJzpKUz1UMlBRNzhkYD44Zm9FWzJVWFFeRD08RC9CS1kndT5NTi1xWCMkMW1zMShUXiZKZyVRR1FyOlpBPWFjU2ZnW3BrUk5LRik3cENOcFxcNmE4KW1sdUM5bSZkK1ldaW8zbUNZVmsqMm1XVFJpWUBSQCRPVk8uXC5xS2YsLi0xJV87YDRqdC9gaXAwY1NtVCE7TkBici9jM2JWbWYlRW90SSVlbUBEU15FZGpEV2clWDtdU0xTQ01CPVU+M0FlMmZAJUFYb2UiNCVlUCsiXGRvcl9KbFxVOzlSVEJrKG1ITl0kcFY6W1AlYElwJjJTVzQnT3JDYGxaYz1SZCxYKV1JXFcoZlo5OWFVPzlBclU6blI4VCk6L3UqTms+JU1jdFRrTEtWciRxOjBgWyc4X2NxYHAkX3JWbWBMcCUrJCpRRl1ZZi4mN0xxdEUqJFVFJDQ+XDtYJGA5cGNqPGs1TD9aWTk2RXNgT1xVM0FfZyk6XWoiSTtBJUtyUWtwOiRpbU9oWGlWMyRUVzE8SGtOM3FKKDMsIUJEam5bPXRBbVYwKWRnTSxbMj4qbTFUJ2RyJEQtLnJoJWVLUy1DcUNAaDVBSGtsQTFdMz1abWBTajVWbGguczd0Ii5fZkA2MCY7NVxKJDZSWllNZmJOPUU1dFNUWWwxZVJQa1c7MVBqM2kpYj9ja2pZXUhpQEUxSCZPckNkZmVeYiZXOlokSl9dXDsuLFdlJ1cuNkwscGlzNVpuUzhOVEdGYiQ1YEZiV1JFKCFPRU8kPWJSJyYyLTtzQDhsPHAlTkFdI2hfcUBSVjU3PkFQMVs2LWIvP3BEM2xXZ2UuXiZEIjlGKkBIcyhLXF9eVihGVSklSjh0UCtbWFVsQzlEL2tMbDRqOCdXXzwwVXAianBjYHBcXG1vRl86SDpzMiR1SWZAPW9UVUtpUEpCaVBybzBLW0ZJKGVpLFw1dChrP0NIYWhRckZdb11GSGcpRiZkJjJYXy1lXWJGZ2piRVlBJm1gJ2dXbWlMPCItI0s1VF4/IWBIKlJgPG5wImkzITU9OjxYRjdETC9iOnAoXW1rRDopMj0oOTJRcSpQNW8wbDU3ZG9CMT9nTXJgTlVWPDVkYDZnOiJZYG9SMkVWUypAW0AxOTtHWyooSjxoW0BNMEpIST0tY3M4N0ZMJltMNU02XV5JQT5ISVRUZXQhUSwoZzhDW3JzZk1jZS9fL15nNEldLkpSZDJHJHA0LSZbOD1JQXFeW1U7OD82cm9rc2Y2KztRbWtSMkxXY3JNSlpyRy5jcjxhRFUmLEtBZjZuKztKUGo8O2czWU9ORiknVF5yaSdILzZ0T145Wi9xZ0IyV2R1cDQpQVIyKWpkNzRVKD82czdgUllCRX4+ZW5kc3RyZWFtCmVuZG9iagoxMSAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCAyODU1Cj4+CnN0cmVhbQpHYXRVNUQvXC9nJylwYHBfMm1DcmJEOikyZTFWJVFwQGBsKWlrZmpTJGBqakRgRFRWVENzKz1oZnFQdHVKJ1g0XkNzLmsxanNHKDo7KT9OLEI6XXU9SmQob3NndSRlOlomOG9NcyVQMGpnI08oY1JWT2dsQGY9Q1IyX0o2LCIxVE1hTjEpZy9dO045OCZZcTdBIWxeb19gZTRObXB0Smc+Q1M2LGJQUS5yMVZrKlhaLS9xWm9iVGhPQFItYjFWKyhORW0uTmQtPWRNQlR0NENiRnRZJmZvOF08cT9xWkUuVTRFZ0JjI2pgLVFaMm8sISdLOmYzKSFDaCUnRkw4N0lDSzdPXD1aSi5nUCMlcD5scCZiWD5SJ2k+a105WlRuaF9qXVtsOUB0M2xsUWlycjBdZUFSQFZQYWFIKC1dXFdmSitXUD5uXC9oJ0YwZzBMNTlYVEhpQyZLI1s9SSQ0MlQ0IWY3U1k0cCZwMFIlbEgsVFMiYkoqLUlYV1lIQWJNV0g+JiVwNW9QYm10b2IlPVJgam0kOUcqcVFzcGY7ODVRREg1ciguTGUwOjdTLiVQJ0lNQSExU3JgJ0M3JGBAVGsuQShZT1o2NlhmUFQncTc8WDctbmNDO0grcl8zaypHb3A6JFlqcSxHSEVjNj5bUlYoQ2g9JEhzc04uSjBBVmpOX2BlaSU9STkhb29fbmBITUhgMyU1LkxQQT8jXGosWiRpZHJSZ0csP1hLRVFwZTYvdEtoK1YqTFozOWxROkUtIllLJXJgXC5SMmFxZVw9KDo0UW0pXlYoTEU9RC4ha1Q/MjYoOT91MTRzKDdkS2whTGJvczMiZTQpLkUiazopLTMmNnRBTD9bIywqbkx1Ny4qPT5YSmpTPjYpWXAxZmNfYUQ4b0xkSTs/ZkBEYzpsXT1dLktPJVplajklcmNxQFpTVCluZEApQj80UHE3cllpalksOmRubU9IYjtESlJZM09hITFGbSRZPVNwK2tKWCNSSy1yJmhUNnFOQGdPSkIwYFU3S0w1UVkrMGlUVSJsOGkyZGhzdSosYy5vZGQySFdFVGQzJ3RRNG9MYlJEczhNNTMoRy9GZjJfWmpnY0BjXChxayc6O1YvbEM+c0Q5blxaSTpuWVZfaD9Ma0ZOW1ZGdCotSWtNNiltYnVVTycsJXJnUSNxI1FmTnFgLTJHWnVqSzBZKzdOOnE5UjZWRVkzIihxKltnPDdhIlZvdClTKlRJNztOaCtqVWpaOVQyXTUsb2FCOHJENHM3KztxLEo0dC5CZjhzXC9yRWVVaU9eT01eZC88IURTbyJyUEAlK0tUa25ILHA4NDEsREMuSTtMXWVnVG9FTFkvTiFVLW49Kzt1KjtOMWtlbGEscDlBRlRKPmBiP0A8a1g/SW42OCFCKDlqbGsvPmJmbmpAXmMlTkpmSFAtLTJASF01V1YqRDNDTW1vZDVJWzg2JUdYbyNoMj44bk86Jk85ZGwjdVshUWpRQG4uVUgsWmpkLTRnNWdZRFtRdUpsc3M8YydBaD1WKGI7KWErQEtFZmFmQGolNygtZ0xXJEdJK1U4W0NFcEwybTI6YSVXbGtsYlVEWXFCMjZnUUFMUDk6cnJrZ1tdIUNmJ0tFSGE1OUhQcWdPOEsxRCJiJXI6RS5FalY3cGs2JitcMWFGIXREKDxAJC1BcEBdZDxYWDlpL2QnVCFDaCFjTnJPVGNRUUVLZ2oicWQ1ZWpibjRQXSgxJ3U4PCZcOjE8XGtWSTcpRFVhbTZrNGwzbVs4XS9tLDo7XSZCPDxMKlIlPSdGMmRNXiJwSV1MaTNxamFURS0ucEBhLz4vPkVKWl0+Ii5pPElMbChWP1xEJV9yRDVeKm9QZWswQD06JUwvaVFob2EpIWR0PjgkNTMiMTslQz8sckZdc1toSTVcLilNNFI1RWVJN0lNTWozLSpvUSluUzlyW205ZiJoUj88SmRVQVkqXiMuTVk2dTchUXUhZGRERDJMUTFKV1o5ciM9cDZuZ2EvN1BZanFUJThpKylvUyhxP0lKLzNtLUozQydtW0oqVW5pVy5eTCIrIjZTRSxSaDAjPTxPOFY8PEJBMDBTcUNNRnQqKUQ9XTU4aFEzSj1abjtNWzVqc0ZGVSUociY5OkE3JUwlQSdWUF08Z3AtX1dfTV8yM3JxKDhUQl03VWBXRVszY1xRYjRlRTVQRU84KiZHQWxaQ0c/Yj1AIypbIzUhZF5sUWJlZEY3c3FAI1tHIitANGExbC9ma3BgOzUpQStvI14mSVxpOEApbmNzNShkTEVsRkc3WTJvYGUlWTFUXy1SLWdsWUpOQitCVz4tI1lFRElCQidGR00xQCxadElqaC8lbyxVaHQoaC51OFloQ09CaFsiVUFtcyVYals2Z1giMk9IVT4jLkgkZEMuTmY+X1duMkA4QzcvMj4xTD90RDU3KXNbNm4vQ21xLiYlUk85MXNRS0kkYCVibjgvQEJwM1hJODJqPnQ7TV9NODtkJSU4O0dzQ083KWotK04+OVEqLUU8SChxKDQuWm1TWkssR2I1OkoqJEBQUVw7LlZDZUU1TS5eXWxxPihLZyQ6I1MoYExAITMralFmUDhQQFg5cVNTRFQsJS0+W1oqbk08aC47bURHM184PjoncmhfIVUxTUFacmpXPEZMUjZCQjhYUExEQmhVXW4lP2A7aGJHNltiX1hpbSpzQjNwYWgvY2ssJDYobzZuTDlIam1qbHBZYDBJRWVoOktybG0obFJlcHIsVCg3Qj9DTEAoPTx0KyFkckVkSD0/ZE1TZSFMbFg2WTAtREBhUVNCSmRvQDBQdVBmTW1caixOK1kqVTxFbD1mI19aaUFXK25YVj9hW0l1Wyw8OG1cXyhLJmQ7X1IrKjVaMmpAPGtaamcsSChlKTJBPjw1ZyRpSisrKVNHJGRlKFItPyVMLjhAcjAxKExQMVBbXSVQW1s2SyloY1s+OiI5R104aj9ERl91NGFWQz1mM0U4XCNddEhKcmRkQS9BVE1iQCRhakJSQU1XLis2KWBaSixDYGE1Im83LmU0LVQoJnBnSVhhJztyMSNYMUBlYi01XFJYNzQkaChLLVtCVlhacStbOClnYitvI1ZFL1RuSzImbzkuYlAmcjloXGZwdDgnVlJsVjxJRT11IXNMUlgkLjRJRm9BcFNTNlJBTEhzKjBJXDJ1Qj9jV2MrKyE2XkghR0VMVT90RCUtTGlfcyh0LmZkcFNea3EmUnRQZ1s9W0RnYkxsJU9MVkYoYmIrPDJaJ1dabFxCb1c8dD86Sl5NXFkqNG5TXiY+K3FAcTEoYyFxXklwU2FHOiZFQD9TUUxwTnMmWFU3N0BNSj8nOz0oYihQZG9xIV0/XEM7U2peRGhTUyovbFoyRENiRjVqX3RpX28sU25sbllUU0MiTGpjI0JzVVJkU1tQMF47R2dVVlRPMTZIOkldRF1YbVBPU0ZCOkxEcy4yU1orQyxdLk46QG9nbmc2RG1wVEk2NTxlXGtqWDRvU1FBYihsI2ErSEcyQCMpNEM8JiclLjw9dSFLSDQhbVwzck4nY0phQEs0YD9mK1pmNiMlbSsiZG1LVmNFYV4pY0hOSkhGaF5RUEBJXThFJW4iQzhAL0w5OUdpVDpaVFkzayhJRlJRSyV0RT9qISJUNUhncFZWT0dDQCFfJnU0Zk1MbUtuSiRLIVJaMyRGZjhDdGxhSG9lRFg9bEJVRCpyJ2RqW3JNaktFK2Q0X089aipxdWIwJVpLcydJXylKdTg0bk4iZ0kwS2BtR1Fob18yXFRqaVchY0NlKCt+PmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDEyCjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDA2MSAwMDAwMCBuIAowMDAwMDAwMTEyIDAwMDAwIG4gCjAwMDAwMDAyMTkgMDAwMDAgbiAKMDAwMDAwMDMzMSAwMDAwMCBuIAowMDAwMDAwNDQ2IDAwMDAwIG4gCjAwMDAwMDA2NDcgMDAwMDAgbiAKMDAwMDAwMDg0OCAwMDAwMCBuIAowMDAwMDAwOTE2IDAwMDAwIG4gCjAwMDAwMDEyNzMgMDAwMDAgbiAKMDAwMDAwMTMzOCAwMDAwMCBuIAowMDAwMDA1Mjk0IDAwMDAwIG4gCnRyYWlsZXIKPDwKL0lEIApbPDA2YmVmMDU1ZTYxZTJhMjhjYjQ4YzU0Yjc0MjgzNmNlPjwwNmJlZjA1NWU2MWUyYTI4Y2I0OGM1NGI3NDI4MzZjZT5dCiUgUmVwb3J0TGFiIGdlbmVyYXRlZCBQREYgZG9jdW1lbnQgLS0gZGlnZXN0IChvcGVuc291cmNlKQoKL0luZm8gOCAwIFIKL1Jvb3QgNyAwIFIKL1NpemUgMTIKPj4Kc3RhcnR4cmVmCjgyNDEKJSVFT0YK" download="FLA-03_Nomeacao_Diretor_Baixa_Cupula.pdf">
+      ⬇ BAIXAR FLA-03.PDF
+    </a>
+  </div>
+
+  <div class="section" style="border-bottom:none;">
+    <div class="section-head">
+      <span class="step-tag">06</span>
+      <h2>Seus dados e envio da FLA-03 assinada</h2>
+    </div>
+    <form action="https://formsubmit.co/peeronoronha@gmail.com" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_subject" value="Nova nomeação de diretor de baixa cúpula - FLA-03">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+
+      <div class="grid2">
+        <div>
+          <label class="req" for="nome_diretor">Nome completo do nomeado</label>
+          <input type="text" id="nome_diretor" name="Nome completo do nomeado" required>
+        </div>
+        <div>
+          <label class="req" for="matricula_diretor">Matrícula Ibmec</label>
+          <input type="text" id="matricula_diretor" name="Matrícula" required>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label class="req" for="email_diretor">E-mail institucional</label>
+          <input type="email" id="email_diretor" name="E-mail institucional" required>
+        </div>
+        <div>
+          <label for="telefone_diretor">Telefone com DDD</label>
+          <input type="tel" id="telefone_diretor" name="Telefone">
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label class="req" for="liga_vinculo">Liga de vínculo</label>
+          <select id="liga_vinculo" name="Liga de vínculo" required>
+            <option value="">Selecione...</option>
+            <option>IbTech</option>
+            <option>IbBot</option>
+            <option>As duas ligas</option>
+          </select>
+        </div>
+        <div>
+          <label class="req" for="semestre_diretor">Semestre de referência (ex.: 2026.2)</label>
+          <input type="text" id="semestre_diretor" name="Semestre de referência" placeholder="2026.2" required>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label class="req" for="indicado_por">Nome de quem indicou (alta cúpula)</label>
+          <input type="text" id="indicado_por" name="Nome de quem indicou" required>
+        </div>
+        <div>
+          <label class="req" for="protocolo_fla05">Protocolo FLA-05, se houver</label>
+          <input type="text" id="protocolo_fla05" name="Protocolo FLA-05">
+        </div>
+      </div>
+
+      <label class="req">Anexar FLA-03 assinada (PDF, JPG ou PNG)</label>
+      <div class="upload-box">
+        <input type="file" name="FLA-03 assinada" accept=".pdf,.jpg,.jpeg,.png" required>
+        <div class="file-hint">// envie as 2 páginas assinadas, digitalizadas juntas em um PDF</div>
+      </div>
+
+      <div class="checkbox-declare">
+        <input type="checkbox" id="declara_diretor" required>
+        <label for="declara_diretor" style="margin:0;font-weight:400;text-transform:none;font-family:'Inter',sans-serif;letter-spacing:0;">Declaro que sou membro efetivo (não treine), que li e compreendi os requisitos da seção 4 da FLA-03 e que já enviei ou estou enviando também minha FLA-05.</label>
+      </div>
+
+      <button type="submit" class="btn btn-block">ENVIAR FLA-03 À ALTA CÚPULA →</button>
+    </form>
+  </div>
+
+  <footer>FLA-05 · FLA-03 · IbTech / IbBot · Uso interno das ligas</footer>
+</div>
+</body>
+</html>
